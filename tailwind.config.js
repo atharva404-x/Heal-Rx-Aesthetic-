@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'class',
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -7,6 +8,30 @@ export default {
   theme: {
     extend: {
       colors: {
+        theme: {
+          bg: 'var(--bg-primary)',
+          'bg-alt': 'var(--bg-secondary)',
+          'bg-tertiary': 'var(--bg-tertiary)',
+          surface: 'var(--surface)',
+          'surface-elevated': 'var(--surface-elevated)',
+          'surface-muted': 'var(--surface-muted)',
+          fg: 'var(--fg-primary)',
+          'fg-secondary': 'var(--fg-secondary)',
+          'fg-muted': 'var(--fg-muted)',
+          'fg-subtle': 'var(--fg-subtle)',
+          border: 'var(--border)',
+          'border-subtle': 'var(--border-subtle)',
+          'border-highlight': 'var(--border-highlight)',
+          accent: 'var(--accent)',
+          'accent-light': 'var(--accent-light)',
+          'accent-hover': 'var(--accent-hover)',
+          'accent-surface': 'var(--accent-surface)',
+          'accent-fg': 'var(--accent-foreground)',
+          'btn-primary-bg': 'var(--btn-primary-bg)',
+          'btn-primary-fg': 'var(--btn-primary-fg)',
+          'btn-secondary-bg': 'var(--btn-secondary-bg)',
+          'btn-secondary-fg': 'var(--btn-secondary-fg)',
+        },
         ivory: {
           50: '#FDFCFB',
           100: '#FAF8F5',
@@ -40,6 +65,8 @@ export default {
           900: '#332415',
         },
         stone: {
+          300: '#D6D3D1',
+          400: '#A8A29E',
           500: '#78716C',
           600: '#5F5B55',
           700: '#4A4642',
@@ -55,9 +82,10 @@ export default {
         'tight-luxury': '-0.02em',
       },
       boxShadow: {
-        'luxury': '0 20px 40px -15px rgba(20, 19, 18, 0.06)',
-        'luxury-lg': '0 30px 60px -20px rgba(20, 19, 18, 0.12)',
-        'glow-gold': '0 0 30px rgba(158, 126, 90, 0.25)',
+        'luxury-sm': 'var(--shadow-sm)',
+        'luxury': 'var(--shadow-md)',
+        'luxury-lg': 'var(--shadow-lg)',
+        'glow-gold': 'var(--shadow-glow)',
       },
       animation: {
         'float-slow': 'float 8s ease-in-out infinite',
@@ -66,7 +94,7 @@ export default {
       keyframes: {
         float: {
           '0%, 100%': { transform: 'translateY(0px)' },
-          '50%': { transform: 'translateY(-10px)' },
+          '50%': { transform: 'translateY(-8px)' },
         },
         pulseSubtle: {
           '0%, 100%': { opacity: '1' },

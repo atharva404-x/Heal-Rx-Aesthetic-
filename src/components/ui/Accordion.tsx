@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface AccordionItem {
   id: string;
@@ -31,40 +32,58 @@ export const Accordion: React.FC<AccordionProps> = ({
   };
 
   return (
-    <div className={`divide-y divide-stone-200/80 border-y border-stone-200/80 ${className}`}>
+    <div className={`divide-y divide-theme-border border-y border-theme-border ${className}`}>
       {items.map((item, index) => {
         const isOpen = openIds.includes(item.id);
 
         return (
-          <div key={item.id} className="py-5 sm:py-6 group">
+          <div key={item.id} className="py-5 sm:py-6 group transition-colors">
             <button
               onClick={() => toggleItem(item.id)}
-              className="w-full flex items-start justify-between text-left focus:outline-none focus:ring-2 focus:ring-gold-500/50 rounded-lg py-1"
+              className="w-full flex items-start justify-between text-left focus:outline-none focus:ring-2 focus:ring-theme-accent/40 rounded-lg py-1"
               aria-expanded={isOpen}
             >
               <div className="flex items-start pr-4">
-                <span className="text-xs font-mono text-gold-500 font-medium mr-4 mt-1">
+                <span className="text-xs font-mono text-theme-accent font-medium mr-4 mt-1">
                   0{index + 1}
                 </span>
-                <span className="font-serif text-lg sm:text-xl text-charcoal-900 group-hover:text-gold-700 transition-colors">
+                <span className="font-serif text-lg sm:text-xl text-theme-fg group-hover:text-theme-accent transition-colors">
                   {item.question}
                 </span>
               </div>
-              <div className={`p-1.5 rounded-full bg-ivory-200 text-charcoal-700 group-hover:bg-gold-100 group-hover:text-gold-800 transition-transform duration-300 flex-shrink-0 ${
-                isOpen ? 'rotate-180 bg-gold-200 text-gold-900' : ''
-              }`}>
+              <motion.div
+                animate={{ rotate: isOpen ? 180 : 0 }}
+                transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                className={`p-1.5 rounded-full border border-theme-border flex-shrink-0 transition-colors ${
+                  isOpen
+                    ? 'bg-theme-accent text-white'
+                    : 'bg-theme-surface-elevated text-theme-fg-muted group-hover:text-theme-accent'
+                }`}
+              >
                 <ChevronDown className="w-4 h-4" />
-              </div>
+              </motion.div>
             </button>
 
-            {isOpen && (
-              <div className="mt-3 pl-8 pr-4 text-stone-600 text-sm sm:text-base leading-relaxed animate-fadeIn">
-                <p>{item.answer}</p>
-              </div>
-            )}
+            <AnimatePresence initial={false}>
+              {isOpen && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: 'auto', opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                  className="overflow-hidden"
+                >
+                  <div className="pt-3 pb-1 pl-8 sm:pl-9 pr-4 text-theme-fg-muted text-sm sm:text-base leading-relaxed">
+                    <p>{item.answer}</p>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         );
       })}
     </div>
   );
 };
+
+export default Accordion;

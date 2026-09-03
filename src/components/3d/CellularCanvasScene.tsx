@@ -4,9 +4,10 @@ import { CellularSculpture } from './CellularSculpture';
 
 interface CellularCanvasSceneProps {
   onLoaded?: () => void;
+  isDark?: boolean;
 }
 
-export const CellularCanvasScene: React.FC<CellularCanvasSceneProps> = ({ onLoaded }) => {
+export const CellularCanvasScene: React.FC<CellularCanvasSceneProps> = ({ onLoaded, isDark = false }) => {
   return (
     <Canvas
       camera={{ position: [0, 0, 4.8], fov: 45 }}
@@ -25,7 +26,7 @@ export const CellularCanvasScene: React.FC<CellularCanvasSceneProps> = ({ onLoad
       }}
     >
       <Suspense fallback={null}>
-        <CellularSculpture />
+        <CellularSculpture isDark={isDark} />
       </Suspense>
     </Canvas>
   );

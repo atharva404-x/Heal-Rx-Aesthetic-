@@ -83,7 +83,7 @@ export const BeforeAfterSlider: React.FC<BeforeAfterSliderProps> = ({
         onKeyDown={handleKeyDown}
         onMouseDown={() => setIsDragging(true)}
         onTouchStart={() => setIsDragging(true)}
-        className="relative w-full aspect-[4/3] sm:aspect-[16/10] rounded-2xl sm:rounded-3xl overflow-hidden cursor-ew-resize select-none border border-gold-300/30 shadow-luxury focus:outline-none focus:ring-2 focus:ring-gold-500"
+        className="relative w-full aspect-[4/3] sm:aspect-[16/10] rounded-2xl sm:rounded-3xl overflow-hidden cursor-ew-resize select-none border border-theme-border shadow-luxury focus:outline-none focus:ring-2 focus:ring-theme-accent"
       >
         {/* "After" Image (Base Layer) */}
         <img
@@ -109,20 +109,20 @@ export const BeforeAfterSlider: React.FC<BeforeAfterSliderProps> = ({
         </div>
 
         {/* Labels */}
-        <span className="absolute top-4 left-4 px-3 py-1 bg-charcoal-900/80 backdrop-blur-md text-white text-[11px] font-medium uppercase tracking-widest rounded-full z-10">
+        <span className="absolute top-4 left-4 px-3 py-1 bg-charcoal-950/80 backdrop-blur-md text-white text-[11px] font-medium uppercase tracking-widest rounded-full z-10 border border-white/10">
           {beforeLabel}
         </span>
-        <span className="absolute top-4 right-4 px-3 py-1 bg-gold-600/90 backdrop-blur-md text-white text-[11px] font-medium uppercase tracking-widest rounded-full z-10">
+        <span className="absolute top-4 right-4 px-3 py-1 bg-gold-600/90 backdrop-blur-md text-white text-[11px] font-medium uppercase tracking-widest rounded-full z-10 border border-gold-400/30">
           {afterLabel}
         </span>
 
         {/* Divider Handle */}
         <div
-          className="absolute top-0 bottom-0 w-0.5 bg-white shadow-glow-gold z-20"
+          className="absolute top-0 bottom-0 w-0.5 bg-white shadow-glow z-20"
           style={{ left: `${sliderPosition}%` }}
         >
-          <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-8 h-8 sm:w-10 sm:h-10 bg-white text-charcoal-900 rounded-full shadow-lg flex items-center justify-center border-2 border-gold-500">
-            <div className="flex items-center space-x-0.5 text-xs font-bold text-gold-600">
+          <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-8 h-8 sm:w-10 sm:h-10 bg-theme-surface text-theme-fg rounded-full shadow-luxury-md flex items-center justify-center border-2 border-theme-accent">
+            <div className="flex items-center space-x-0.5 text-xs font-bold text-theme-accent">
               <span>‹</span>
               <span>›</span>
             </div>
@@ -133,14 +133,16 @@ export const BeforeAfterSlider: React.FC<BeforeAfterSliderProps> = ({
       {/* Title & Notes */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 px-1">
         <div>
-          <h4 className="font-serif text-lg text-charcoal-900">{title}</h4>
-          {subtitle && <p className="text-xs text-stone-500">{subtitle}</p>}
+          <h4 className="font-serif text-lg text-theme-fg">{title}</h4>
+          {subtitle && <p className="text-xs text-theme-fg-muted">{subtitle}</p>}
         </div>
-        <div className="flex items-center text-[11px] text-stone-400">
-          <Sparkles className="w-3.5 h-3.5 text-gold-500 mr-1.5" />
+        <div className="flex items-center text-[11px] text-theme-fg-subtle">
+          <Sparkles className="w-3.5 h-3.5 text-theme-accent mr-1.5" />
           <span>Drag slider or use arrow keys</span>
         </div>
       </div>
     </div>
   );
 };
+
+export default BeforeAfterSlider;

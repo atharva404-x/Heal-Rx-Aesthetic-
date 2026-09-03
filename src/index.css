@@ -2,11 +2,123 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ==========================================================================
+   HEALRX DESIGN TOKEN SYSTEM (CSS VARIABLES)
+   Light Mode (Default) & Dark Mode (Cinematic Evening Edition)
+   ========================================================================== */
+
 :root {
   color-scheme: light;
-  --color-ivory: #FAF8F5;
-  --color-charcoal: #141312;
-  --color-gold: #9E7E5A;
+
+  /* Backgrounds & Surfaces (Warm Ivory, Bone, Cream) */
+  --bg-primary: #FAF8F5;
+  --bg-secondary: #F3EFEA;
+  --bg-tertiary: #EBE5DC;
+  --surface: #FFFFFF;
+  --surface-elevated: #FFFFFF;
+  --surface-muted: #F5F1EA;
+
+  /* Typography & Foreground (Deep Warm Charcoal) */
+  --fg-primary: #141312;
+  --fg-secondary: #44403C;
+  --fg-muted: #78716C;
+  --fg-subtle: #A8A29E;
+
+  /* Borders & Dividers */
+  --border: rgba(20, 19, 18, 0.08);
+  --border-subtle: rgba(20, 19, 18, 0.04);
+  --border-highlight: rgba(158, 126, 90, 0.28);
+
+  /* Accents & Brand Gold / Champagne */
+  --accent: #9E7E5A;
+  --accent-light: #C5A880;
+  --accent-hover: #846645;
+  --accent-surface: #F8F4EE;
+  --accent-foreground: #FFFFFF;
+
+  /* Interactive Buttons */
+  --btn-primary-bg: #141312;
+  --btn-primary-fg: #FAF8F5;
+  --btn-primary-hover: #9E7E5A;
+  --btn-secondary-bg: #F3EFEA;
+  --btn-secondary-fg: #141312;
+  --btn-secondary-hover: #EBE5DC;
+
+  /* Elevation & Shadows */
+  --shadow-sm: 0 2px 8px -2px rgba(20, 19, 18, 0.04);
+  --shadow-md: 0 12px 32px -8px rgba(20, 19, 18, 0.06);
+  --shadow-lg: 0 24px 48px -12px rgba(20, 19, 18, 0.08);
+  --shadow-glow: 0 0 24px rgba(158, 126, 90, 0.15);
+
+  /* Glassmorphism & Navbar */
+  --glass-bg: rgba(250, 248, 245, 0.82);
+  --glass-border: rgba(158, 126, 90, 0.12);
+  --glass-card: rgba(255, 255, 255, 0.85);
+
+  /* 3D Scene Environment */
+  --3d-bg: #FAF8F5;
+  --3d-ambient: #FAF8F5;
+  --3d-light-primary: #FAF8F5;
+  --3d-light-secondary: #D4BC98;
+  --3d-sculpture-outer: #EFE9E0;
+  --3d-sculpture-inner: #A88B68;
+}
+
+.dark {
+  color-scheme: dark;
+
+  /* Backgrounds & Surfaces (Deep Warm Charcoal, Soft Black, Slate Warm) */
+  --bg-primary: #121110;
+  --bg-secondary: #171615;
+  --bg-tertiary: #1E1C1A;
+  --surface: #1B1918;
+  --surface-elevated: #22201E;
+  --surface-muted: #181716;
+
+  /* Typography & Foreground (Warm Ivory, Muted Warm-Gray) */
+  --fg-primary: #FAF6EE;
+  --fg-secondary: #D4CDC3;
+  --fg-muted: #9E978E;
+  --fg-subtle: #6E6860;
+
+  /* Borders & Dividers */
+  --border: rgba(245, 242, 236, 0.09);
+  --border-subtle: rgba(245, 242, 236, 0.05);
+  --border-highlight: rgba(197, 168, 128, 0.25);
+
+  /* Accents & Brand Gold / Champagne (Luminous Muted Warmth) */
+  --accent: #C5A880;
+  --accent-light: #DDC8A8;
+  --accent-hover: #E8D7BE;
+  --accent-surface: rgba(197, 168, 128, 0.1);
+  --accent-foreground: #121110;
+
+  /* Interactive Buttons */
+  --btn-primary-bg: #C5A880;
+  --btn-primary-fg: #121110;
+  --btn-primary-hover: #DDC8A8;
+  --btn-secondary-bg: #22201E;
+  --btn-secondary-fg: #FAF6EE;
+  --btn-secondary-hover: #2C2926;
+
+  /* Elevation & Shadows */
+  --shadow-sm: 0 2px 8px -2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 12px 32px -8px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 24px 48px -12px rgba(0, 0, 0, 0.6);
+  --shadow-glow: 0 0 32px rgba(197, 168, 128, 0.12);
+
+  /* Glassmorphism & Navbar */
+  --glass-bg: rgba(18, 17, 16, 0.85);
+  --glass-border: rgba(197, 168, 128, 0.12);
+  --glass-card: rgba(27, 25, 24, 0.85);
+
+  /* 3D Scene Environment */
+  --3d-bg: #121110;
+  --3d-ambient: #1E1C1A;
+  --3d-light-primary: #C5A880;
+  --3d-light-secondary: #684E33;
+  --3d-sculpture-outer: #282420;
+  --3d-sculpture-inner: #C5A880;
 }
 
 @layer base {
@@ -17,29 +129,30 @@
   }
 
   body {
-    background-color: #FAF8F5;
-    color: #141312;
+    background-color: var(--bg-primary);
+    color: var(--fg-primary);
     overflow-x: hidden;
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    transition: background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  /* Custom Luxury Scrollbar */
+  /* Custom Luxury Scrollbar adapting to active theme */
   ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 5px;
+    height: 5px;
   }
 
   ::-webkit-scrollbar-track {
-    background: #FAF8F5;
+    background: var(--bg-primary);
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #D4BC98;
+    background: var(--border-highlight);
     border-radius: 9999px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: #9E7E5A;
+    background: var(--accent);
   }
 }
 
@@ -49,32 +162,25 @@
   }
   
   .glass-card {
-    background: rgba(255, 255, 255, 0.75);
+    background: var(--glass-card);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(158, 126, 90, 0.15);
-  }
-
-  .glass-dark {
-    background: rgba(20, 19, 18, 0.85);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--border);
   }
 
   .glass-nav {
-    background: rgba(250, 248, 245, 0.85);
+    background: var(--glass-bg);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(158, 126, 90, 0.12);
+    border-bottom: 1px solid var(--glass-border);
   }
 
   .editorial-border {
-    border-color: rgba(30, 28, 26, 0.08);
+    border-color: var(--border);
   }
 
   .editorial-shadow {
-    box-shadow: 0 30px 60px -20px rgba(20, 19, 18, 0.08);
+    box-shadow: var(--shadow-md);
   }
 }
 

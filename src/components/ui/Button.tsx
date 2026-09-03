@@ -28,7 +28,7 @@ export const Button: React.FC<ButtonProps> = ({
   rel,
   ...props
 }) => {
-  const baseStyles = 'inline-flex items-center justify-center font-medium tracking-wide transition-all duration-300 rounded-full focus:outline-none focus:ring-2 focus:ring-gold-500/50 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed group';
+  const baseStyles = 'inline-flex items-center justify-center font-medium tracking-wide transition-all duration-300 rounded-full focus:outline-none focus:ring-2 focus:ring-theme-accent/50 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed group';
 
   const sizeStyles = {
     sm: 'px-5 py-2 text-xs uppercase tracking-widest',
@@ -37,11 +37,11 @@ export const Button: React.FC<ButtonProps> = ({
   };
 
   const variantStyles = {
-    primary: 'bg-charcoal-900 text-ivory-50 hover:bg-gold-600 hover:text-white shadow-luxury hover:shadow-glow-gold active:scale-[0.98]',
+    primary: 'bg-theme-btn-primary-bg text-theme-btn-primary-fg hover:opacity-90 shadow-luxury hover:shadow-glow active:scale-[0.98]',
     gold: 'bg-gold-500 text-white hover:bg-gold-600 shadow-luxury hover:shadow-glow-gold active:scale-[0.98]',
-    secondary: 'bg-ivory-200 text-charcoal-900 hover:bg-ivory-300 active:scale-[0.98]',
-    outline: 'border border-charcoal-900/20 text-charcoal-900 hover:border-gold-500 hover:text-gold-600 hover:bg-gold-50/50 active:scale-[0.98]',
-    ghost: 'text-charcoal-900 hover:text-gold-600 hover:bg-gold-50/50',
+    secondary: 'bg-theme-surface-elevated text-theme-fg hover:bg-theme-surface border border-theme-border shadow-luxury-sm active:scale-[0.98]',
+    outline: 'border border-theme-border text-theme-fg hover:border-theme-accent hover:text-theme-accent hover:bg-theme-accent-surface active:scale-[0.98]',
+    ghost: 'text-theme-fg hover:text-theme-accent hover:bg-theme-accent-surface active:scale-[0.98]',
   };
 
   const combinedStyles = `${baseStyles} ${sizeStyles[size]} ${variantStyles[variant]} ${className}`;
@@ -77,3 +77,5 @@ export const Button: React.FC<ButtonProps> = ({
     </button>
   );
 };
+
+export default Button;

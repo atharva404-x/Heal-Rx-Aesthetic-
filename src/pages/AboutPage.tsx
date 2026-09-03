@@ -5,6 +5,7 @@ import { ASSETS } from '../data/assets';
 import { Button } from '../components/ui/Button';
 import { SectionHeading } from '../components/ui/SectionHeading';
 import { SEOHead } from '../components/seo/SEOHead';
+import { FadeIn, TextReveal, Magnetic } from '../components/motion/MotionPrimitives';
 
 interface AboutPageProps {
   onOpenBooking: (treatmentSlug?: string) => void;
@@ -12,7 +13,7 @@ interface AboutPageProps {
 
 export const AboutPage: React.FC<AboutPageProps> = ({ onOpenBooking }) => {
   return (
-    <div className="min-h-screen bg-ivory-100 text-charcoal-900 pt-28 sm:pt-36 pb-20">
+    <div className="min-h-screen bg-theme-bg text-theme-fg pt-28 sm:pt-36 pb-20 transition-colors duration-400">
       <SEOHead
         title="About Us & Medical Leadership | Dr. Pruthvi Vaity"
         description="Learn about HealRx Aesthetics & Laser Clinic in Sion, Mumbai. Founded by Medical Director Dr. Pruthvi Vaity, dedicated to evidence-based aesthetic medicine and longevity care."
@@ -20,73 +21,79 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onOpenBooking }) => {
 
       {/* Hero Header */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-        <div className="max-w-3xl">
-          <span className="text-xs uppercase tracking-widest-luxury text-gold-600 font-semibold px-3.5 py-1.5 rounded-full bg-gold-50 border border-gold-200/60 inline-block mb-4">
-            About HealRx Aesthetics
-          </span>
-          <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-normal leading-[1.1] text-charcoal-900 text-balance">
+        <div className="max-w-3xl space-y-4">
+          <FadeIn delay={0.05}>
+            <span className="text-xs uppercase tracking-widest-luxury text-theme-accent font-semibold px-3.5 py-1.5 rounded-full bg-theme-accent-surface border border-theme-border-highlight inline-block">
+              About HealRx Aesthetics
+            </span>
+          </FadeIn>
+          
+          <TextReveal delay={0.1} as="h1" className="font-serif text-4xl sm:text-5xl lg:text-6xl font-normal leading-[1.1] text-theme-fg text-balance">
             WHERE CLINICAL SCIENCE MEETS UNDERSTATED LUXURY.
-          </h1>
-          <p className="mt-6 text-base sm:text-lg text-stone-600 leading-relaxed">
-            HealRx Aesthetics & Laser Clinic was established in Sion, Mumbai with a singular conviction: that aesthetic dermatology must be practiced with rigorous medical integrity, anatomical restraint, and sincere patient care.
-          </p>
+          </TextReveal>
+
+          <FadeIn delay={0.25}>
+            <p className="mt-4 text-base sm:text-lg text-theme-fg-muted leading-relaxed">
+              HealRx Aesthetics &amp; Laser Clinic was established in Sion, Mumbai with a singular conviction: that aesthetic dermatology must be practiced with rigorous medical integrity, anatomical restraint, and sincere patient care.
+            </p>
+          </FadeIn>
         </div>
       </section>
 
       {/* Editorial Image Banner */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-          <div className="md:col-span-8 rounded-3xl overflow-hidden shadow-luxury aspect-[16/9] border border-gold-300/30">
+          <div className="md:col-span-8 rounded-3xl overflow-hidden shadow-luxury aspect-[16/9] border border-theme-border group">
             <img
               src={ASSETS.clinic.consultationSuite}
               alt="HealRx Aesthetic Suite in Sion Mumbai"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
             />
           </div>
-          <div className="md:col-span-4 rounded-3xl overflow-hidden shadow-luxury aspect-[4/3] md:aspect-auto border border-gold-300/30">
+          <div className="md:col-span-4 rounded-3xl overflow-hidden shadow-luxury aspect-[4/3] md:aspect-auto border border-theme-border group">
             <img
               src={ASSETS.clinic.laserSuite}
               alt="HealRx Medical Laser Suite"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
             />
           </div>
         </div>
       </section>
 
       {/* Medical Director Deep-Dive */}
-      <section className="py-16 bg-ivory-200/60 border-y border-stone-200/80">
+      <section className="py-20 bg-theme-bg-alt border-y border-theme-border transition-colors duration-400">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             {/* Portrait */}
             <div className="lg:col-span-5">
-              <div className="rounded-3xl overflow-hidden shadow-2xl border border-white/60 aspect-[4/5] bg-charcoal-900">
+              <div className="rounded-3xl overflow-hidden shadow-luxury border border-theme-border aspect-[4/5] bg-theme-surface-elevated group">
                 <img
                   src={MEDICAL_DIRECTOR.image}
                   alt={MEDICAL_DIRECTOR.name}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                 />
               </div>
             </div>
 
             {/* Content */}
             <div className="lg:col-span-7 space-y-6">
-              <span className="text-[11px] uppercase tracking-widest-luxury text-gold-700 font-semibold px-3 py-1 rounded-full bg-gold-100/70 border border-gold-300/50 inline-block">
-                Founder & Medical Director
+              <span className="text-[11px] uppercase tracking-widest-luxury text-theme-accent font-semibold px-3.5 py-1.5 rounded-full bg-theme-accent-surface border border-theme-border-highlight inline-block">
+                Founder &amp; Medical Director
               </span>
 
-              <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-charcoal-900">
+              <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-theme-fg font-normal">
                 {MEDICAL_DIRECTOR.name}
               </h2>
 
-              <p className="text-gold-700 font-medium text-sm sm:text-base">
+              <p className="text-theme-accent font-medium text-sm sm:text-base">
                 {MEDICAL_DIRECTOR.designation}
               </p>
 
-              <blockquote className="border-l-2 border-gold-600 pl-4 italic font-serif text-lg sm:text-xl text-stone-700">
-                "{MEDICAL_DIRECTOR.quote}"
+              <blockquote className="border-l-2 border-theme-accent pl-4 italic font-serif text-lg sm:text-xl text-theme-fg-secondary">
+                &ldquo;{MEDICAL_DIRECTOR.quote}&rdquo;
               </blockquote>
 
-              <div className="space-y-4 text-stone-600 text-sm sm:text-base leading-relaxed">
+              <div className="space-y-4 text-theme-fg-muted text-sm sm:text-base leading-relaxed">
                 {MEDICAL_DIRECTOR.bio.map((para, i) => (
                   <p key={i}>{para}</p>
                 ))}
@@ -95,21 +102,23 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onOpenBooking }) => {
               {/* Accolades */}
               <div className="space-y-2.5 pt-2">
                 {MEDICAL_DIRECTOR.highlights.map((item, idx) => (
-                  <div key={idx} className="flex items-start space-x-2 text-xs sm:text-sm text-charcoal-800">
-                    <CheckCircle2 className="w-4 h-4 text-gold-600 flex-shrink-0 mt-0.5" />
+                  <div key={idx} className="flex items-start space-x-2 text-xs sm:text-sm text-theme-fg-secondary">
+                    <CheckCircle2 className="w-4 h-4 text-theme-accent flex-shrink-0 mt-0.5" />
                     <span>{item}</span>
                   </div>
                 ))}
               </div>
 
               <div className="pt-4">
-                <Button
-                  variant="primary"
-                  size="md"
-                  onClick={() => onOpenBooking()}
-                >
-                  Book Consultation with Dr. Vaity
-                </Button>
+                <Magnetic strength={0.2}>
+                  <Button
+                    variant="primary"
+                    size="md"
+                    onClick={() => onOpenBooking()}
+                  >
+                    Book Consultation with Dr. Vaity
+                  </Button>
+                </Magnetic>
               </div>
             </div>
           </div>
@@ -144,12 +153,12 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onOpenBooking }) => {
           ].map((card, i) => {
             const Icon = card.icon;
             return (
-              <div key={i} className="p-8 rounded-3xl bg-white border border-stone-200/80 shadow-luxury space-y-4">
-                <div className="w-12 h-12 rounded-2xl bg-gold-50 text-gold-600 flex items-center justify-center border border-gold-200/60">
+              <div key={i} className="p-8 rounded-3xl bg-theme-surface border border-theme-border shadow-luxury-sm hover:shadow-luxury transition-all duration-300 space-y-4">
+                <div className="w-12 h-12 rounded-2xl bg-theme-accent-surface text-theme-accent flex items-center justify-center border border-theme-border-highlight">
                   <Icon className="w-6 h-6" />
                 </div>
-                <h3 className="font-serif text-2xl text-charcoal-900">{card.title}</h3>
-                <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">{card.desc}</p>
+                <h3 className="font-serif text-2xl text-theme-fg">{card.title}</h3>
+                <p className="text-xs sm:text-sm text-theme-fg-muted leading-relaxed">{card.desc}</p>
               </div>
             );
           })}
@@ -158,22 +167,24 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onOpenBooking }) => {
 
       {/* CTA Box */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-10">
-        <div className="p-8 sm:p-12 rounded-3xl bg-charcoal-950 text-ivory-50 text-center space-y-6">
-          <h2 className="font-serif text-3xl sm:text-4xl text-white">
+        <div className="p-8 sm:p-12 rounded-3xl bg-theme-surface-elevated text-theme-fg border border-theme-border shadow-luxury text-center space-y-6">
+          <h2 className="font-serif text-3xl sm:text-4xl text-theme-fg">
             Visit Our Sion Clinic Lounge
           </h2>
-          <p className="text-stone-300 text-sm sm:text-base max-w-lg mx-auto">
+          <p className="text-theme-fg-muted text-sm sm:text-base max-w-lg mx-auto">
             Conveniently situated opposite Croma Store and ahead of PVR Cinema, Sion Koliwada, Mumbai. Open daily 10:00 AM – 10:00 PM.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
-            <Button variant="gold" size="lg" onClick={() => onOpenBooking()}>
-              Schedule Consultation
-            </Button>
+            <Magnetic strength={0.25}>
+              <Button variant="primary" size="lg" onClick={() => onOpenBooking()}>
+                Schedule Consultation
+              </Button>
+            </Magnetic>
             <a
               href={`tel:${CLINIC_INFO.phone}`}
-              className="px-8 py-4 bg-white/10 text-white rounded-full font-medium text-xs uppercase tracking-widest hover:bg-white/20 transition-all inline-flex items-center"
+              className="px-8 py-4 bg-theme-surface border border-theme-border text-theme-fg rounded-full font-medium text-xs uppercase tracking-widest hover:bg-theme-surface-elevated transition-all inline-flex items-center shadow-luxury-sm"
             >
-              <Phone className="w-4 h-4 mr-2" />
+              <Phone className="w-4 h-4 mr-2 text-theme-accent" />
               Call {CLINIC_INFO.displayPhone}
             </a>
           </div>
@@ -182,3 +193,5 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onOpenBooking }) => {
     </div>
   );
 };
+
+export default AboutPage;

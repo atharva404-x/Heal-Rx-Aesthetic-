@@ -1,6 +1,7 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { ASSETS } from '../../data/assets';
 import { ThreeErrorBoundary } from './ThreeErrorBoundary';
+import { useTheme } from '../../context/ThemeContext';
 
 // Progressively lazy-load Three.js / Canvas bundle so it does not block initial paint
 const CellularCanvasScene = lazy(() => import('./CellularCanvasScene'));
@@ -10,6 +11,8 @@ interface HeroCanvasProps {
 }
 
 export const HeroCanvas: React.FC<HeroCanvasProps> = ({ className = '' }) => {
+  const { isDark } = useTheme();
+
   const [hasWebGL] = useState<boolean>(() => {
     if (typeof window === 'undefined') return true;
     try {
@@ -36,11 +39,10 @@ export const HeroCanvas: React.FC<HeroCanvasProps> = ({ className = '' }) => {
     return () => mediaQuery.removeEventListener('change', handleChange);
   }, []);
 
-  // 3. Progressive 3D mounting after main thread has settled
+  // Progressive 3D mounting after main thread has settled
   useEffect(() => {
     if (!hasWebGL || prefersReducedMotion) return;
 
-    // Small timeout ensures initial paint and LCP complete before Three.js scene compilation
     const timer = setTimeout(() => {
       setShouldMount3D(true);
     }, 150);
@@ -48,26 +50,26 @@ export const HeroCanvas: React.FC<HeroCanvasProps> = ({ className = '' }) => {
     return () => clearTimeout(timer);
   }, [hasWebGL, prefersReducedMotion]);
 
-  // Luxury Fallback Poster Component
+  // Luxury Fallback Poster Component with theme adaptation
   const PosterFallback = (
-    <div className="relative w-full h-full min-h-[360px] sm:min-h-[460px] lg:min-h-[560px] overflow-hidden rounded-3xl shadow-luxury-md border border-gold-200/40 bg-ivory-200">
+    <div className="relative w-full h-full min-h-[360px] sm:min-h-[460px] lg:min-h-[560px] overflow-hidden rounded-3xl shadow-luxury border border-theme-border bg-theme-surface-elevated transition-colors duration-400">
       <img
         src={ASSETS.hero.fallbackPoster}
         alt="HealRx Aesthetic Medicine & Cellular Skin Rejuvenation"
-        className="w-full h-full object-cover rounded-3xl filter brightness-[0.98] transition-transform duration-700 hover:scale-105"
+        className="w-full h-full object-cover rounded-3xl filter brightness-[0.96] contrast-[1.02] transition-transform duration-700 hover:scale-105"
         loading="eager"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-charcoal-900/60 via-charcoal-900/10 to-transparent pointer-events-none" />
-      <div className="absolute bottom-6 left-6 right-6 p-4 rounded-2xl bg-ivory-100/90 backdrop-blur-md border border-gold-200/60 flex items-center justify-between">
+      <div className={`absolute inset-0 bg-gradient-to-t ${isDark ? 'from-charcoal-950/85 via-charcoal-950/20' : 'from-charcoal-900/50 via-transparent'} to-transparent pointer-events-none transition-colors duration-400`} />
+      <div className="absolute bottom-6 left-6 right-6 p-4 rounded-2xl bg-theme-surface/90 backdrop-blur-md border border-theme-border flex items-center justify-between shadow-luxury-sm">
         <div>
-          <span className="text-[10px] uppercase tracking-widest text-gold-800 font-semibold block">
+          <span className="text-[10px] uppercase tracking-widest text-theme-accent font-semibold block">
             Cellular Biocompatibility
           </span>
-          <span className="font-serif text-sm text-charcoal-900 font-medium">
+          <span className="font-serif text-sm text-theme-fg font-medium">
             Triple Wavelength &amp; Regenerative Medicine
           </span>
         </div>
-        <span className="w-2.5 h-2.5 rounded-full bg-gold-600 animate-ping" />
+        <span className="w-2.5 h-2.5 rounded-full bg-theme-accent animate-ping" />
       </div>
     </div>
   );
@@ -88,7 +90,7 @@ export const HeroCanvas: React.FC<HeroCanvasProps> = ({ className = '' }) => {
         {PosterFallback}
       </div>
 
-      {/* 3D Interactive Canvas Scene: Progressively loaded & isolated with ErrorBoundary */}
+      {/* 3D Interactive Canvas Scene: Progressively loaded, theme-aware, isolated with ErrorBoundary */}
       {shouldMount3D && (
         <ThreeErrorBoundary fallback={PosterFallback}>
           <div 
@@ -97,7 +99,7 @@ export const HeroCanvas: React.FC<HeroCanvasProps> = ({ className = '' }) => {
             }`}
           >
             <Suspense fallback={null}>
-              <CellularCanvasScene onLoaded={() => setIs3DReady(true)} />
+              <CellularCanvasScene isDark={isDark} onLoaded={() => setIs3DReady(true)} />
             </Suspense>
           </div>
         </ThreeErrorBoundary>

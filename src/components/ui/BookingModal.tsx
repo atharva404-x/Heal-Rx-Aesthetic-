@@ -75,7 +75,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     // Simulate reliable dispatch
     setTimeout(() => {
       setStatus('success');
-    }, 800);
+    }, 600);
   };
 
   const generateWhatsAppLink = () => {
@@ -97,28 +97,29 @@ export const BookingModal: React.FC<BookingModalProps> = ({
 
   return (
     <div 
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto bg-charcoal-950/70 backdrop-blur-md transition-opacity duration-300 animate-fadeIn"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto bg-charcoal-950/75 backdrop-blur-md transition-opacity duration-300 animate-fadeIn"
       role="dialog"
       aria-modal="true"
       aria-labelledby="modal-title"
+      onClick={onClose}
     >
       <div 
-        className="relative w-full max-w-xl bg-ivory-50 rounded-3xl shadow-2xl border border-gold-300/30 overflow-hidden my-8"
+        className="relative w-full max-w-xl bg-theme-bg rounded-3xl shadow-luxury-lg border border-theme-border overflow-hidden my-8 transition-colors duration-300"
         onClick={e => e.stopPropagation()}
       >
         {/* Header Ribbon */}
-        <div className="bg-charcoal-900 px-6 sm:px-8 py-5 text-ivory-50 flex items-center justify-between">
+        <div className="bg-theme-surface-elevated px-6 sm:px-8 py-5 border-b border-theme-border flex items-center justify-between">
           <div>
-            <span className="text-[10px] uppercase tracking-widest text-gold-400 font-medium">
+            <span className="text-[10px] uppercase tracking-widest text-theme-accent font-medium">
               Sion • Mumbai Clinic
             </span>
-            <h3 id="modal-title" className="font-serif text-2xl font-normal text-ivory-50">
+            <h3 id="modal-title" className="font-serif text-2xl font-normal text-theme-fg">
               Schedule a Consultation
             </h3>
           </div>
           <button
             onClick={onClose}
-            className="p-2 rounded-full text-charcoal-300 hover:text-white hover:bg-charcoal-800 transition-colors focus:outline-none focus:ring-2 focus:ring-gold-500"
+            className="p-2 rounded-full text-theme-fg-muted hover:text-theme-fg hover:bg-theme-surface transition-colors focus:outline-none focus:ring-2 focus:ring-theme-accent"
             aria-label="Close dialog"
           >
             <X className="w-5 h-5" />
@@ -126,22 +127,22 @@ export const BookingModal: React.FC<BookingModalProps> = ({
         </div>
 
         {/* Modal Body */}
-        <div className="p-6 sm:p-8 max-h-[80vh] overflow-y-auto">
+        <div className="p-6 sm:p-8 max-h-[80vh] overflow-y-auto text-theme-fg">
           {status === 'success' ? (
             <div className="text-center py-6 sm:py-8 space-y-5 animate-fadeIn">
-              <div className="w-16 h-16 bg-gold-50 text-gold-600 rounded-full flex items-center justify-center mx-auto border border-gold-200">
+              <div className="w-16 h-16 bg-theme-accent-surface text-theme-accent rounded-full flex items-center justify-center mx-auto border border-theme-border-highlight shadow-glow">
                 <CheckCircle2 className="w-9 h-9" />
               </div>
-              <h4 className="font-serif text-2xl sm:text-3xl text-charcoal-900">
+              <h4 className="font-serif text-2xl sm:text-3xl text-theme-fg">
                 Consultation Request Received
               </h4>
-              <p className="text-stone-600 text-sm sm:text-base leading-relaxed max-w-md mx-auto">
-                Thank you, <strong className="text-charcoal-900">{formData.name}</strong>. Our clinical coordinator at HealRx Sion will call you shortly at <strong className="text-charcoal-900">{formData.phone}</strong> to confirm your appointment time.
+              <p className="text-theme-fg-muted text-sm sm:text-base leading-relaxed max-w-md mx-auto">
+                Thank you, <strong className="text-theme-fg">{formData.name}</strong>. Our clinical coordinator at HealRx Sion will call you shortly at <strong className="text-theme-fg">{formData.phone}</strong> to confirm your appointment time.
               </p>
 
-              <div className="p-4 bg-gold-50/60 rounded-2xl border border-gold-200/60 text-left space-y-2 text-xs sm:text-sm text-stone-700">
-                <p><strong>Clinic:</strong> HealRx Aesthetics & Laser Clinic, Sion Koliwada (Opp. Croma)</p>
-                <p><strong>Direct Helpline:</strong> <a href={`tel:${CLINIC_INFO.phone}`} className="text-gold-700 font-semibold underline">{CLINIC_INFO.displayPhone}</a></p>
+              <div className="p-4 bg-theme-surface rounded-2xl border border-theme-border text-left space-y-2 text-xs sm:text-sm text-theme-fg-muted shadow-luxury-sm">
+                <p><strong>Clinic:</strong> HealRx Aesthetics &amp; Laser Clinic, Sion Koliwada (Opp. Croma)</p>
+                <p><strong>Direct Helpline:</strong> <a href={`tel:${CLINIC_INFO.phone}`} className="text-theme-accent font-semibold underline">{CLINIC_INFO.displayPhone}</a></p>
                 <p><strong>Operating Hours:</strong> 10:00 AM – 10:00 PM (Monday – Sunday)</p>
               </div>
 
@@ -150,35 +151,34 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                   href={generateWhatsAppLink()}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 inline-flex items-center justify-center px-6 py-3.5 bg-[#25D366] text-white rounded-full font-medium text-xs uppercase tracking-widest hover:bg-[#20ba5a] transition-all shadow-md"
+                  className="flex-1 py-3 px-5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-full text-xs uppercase tracking-widest font-medium text-center transition-colors shadow-sm"
                 >
-                  <MessageSquare className="w-4 h-4 mr-2" />
-                  Instant WhatsApp Confirm
+                  Send Details on WhatsApp
                 </a>
-                <Button variant="outline" size="md" onClick={onClose} className="flex-1">
+                <Button variant="secondary" size="md" onClick={onClose}>
                   Done
                 </Button>
               </div>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
-              <p className="text-xs sm:text-sm text-stone-600">
-                Meet with our Medical Director Dr. Pruthvi Vaity for an evidence-based clinical assessment and tailored aesthetic treatment roadmap.
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <p className="text-xs sm:text-sm text-theme-fg-muted leading-relaxed pb-2">
+                Complete your details below for a dedicated consultation with Medical Director <strong>Dr. Pruthvi Vaity</strong>.
               </p>
 
               {errorMessage && (
-                <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs">
+                <div className="p-3 rounded-xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 text-red-700 dark:text-red-300 text-xs">
                   {errorMessage}
                 </div>
               )}
 
               {/* Full Name */}
               <div>
-                <label className="block text-xs font-medium uppercase tracking-wider text-charcoal-700 mb-1.5">
+                <label className="block text-xs font-medium uppercase tracking-wider text-theme-fg-secondary mb-1.5">
                   Full Name *
                 </label>
                 <div className="relative">
-                  <User className="absolute left-3.5 top-3.5 w-4 h-4 text-stone-400" />
+                  <User className="absolute left-3.5 top-3.5 w-4 h-4 text-theme-fg-subtle" />
                   <input
                     type="text"
                     name="name"
@@ -186,7 +186,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                     value={formData.name}
                     onChange={handleChange}
                     placeholder="e.g. Aarti Sharma"
-                    className="w-full pl-10 pr-4 py-3 bg-white rounded-xl border border-stone-200 text-sm text-charcoal-900 placeholder:text-stone-400 focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500 transition-colors"
+                    className="w-full pl-10 pr-4 py-3 bg-theme-surface rounded-xl border border-theme-border text-sm text-theme-fg placeholder:text-theme-fg-subtle focus:outline-none focus:border-theme-accent focus:ring-1 focus:ring-theme-accent transition-colors"
                   />
                 </div>
               </div>
@@ -194,11 +194,11 @@ export const BookingModal: React.FC<BookingModalProps> = ({
               {/* Phone & Email Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-medium uppercase tracking-wider text-charcoal-700 mb-1.5">
+                  <label className="block text-xs font-medium uppercase tracking-wider text-theme-fg-secondary mb-1.5">
                     Phone Number (WhatsApp) *
                   </label>
                   <div className="relative">
-                    <Phone className="absolute left-3.5 top-3.5 w-4 h-4 text-stone-400" />
+                    <Phone className="absolute left-3.5 top-3.5 w-4 h-4 text-theme-fg-subtle" />
                     <input
                       type="tel"
                       name="phone"
@@ -206,24 +206,24 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                       value={formData.phone}
                       onChange={handleChange}
                       placeholder="+91 98765 43210"
-                      className="w-full pl-10 pr-4 py-3 bg-white rounded-xl border border-stone-200 text-sm text-charcoal-900 placeholder:text-stone-400 focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500 transition-colors"
+                      className="w-full pl-10 pr-4 py-3 bg-theme-surface rounded-xl border border-theme-border text-sm text-theme-fg placeholder:text-theme-fg-subtle focus:outline-none focus:border-theme-accent focus:ring-1 focus:ring-theme-accent transition-colors"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-medium uppercase tracking-wider text-charcoal-700 mb-1.5">
+                  <label className="block text-xs font-medium uppercase tracking-wider text-theme-fg-secondary mb-1.5">
                     Email Address
                   </label>
                   <div className="relative">
-                    <Mail className="absolute left-3.5 top-3.5 w-4 h-4 text-stone-400" />
+                    <Mail className="absolute left-3.5 top-3.5 w-4 h-4 text-theme-fg-subtle" />
                     <input
                       type="email"
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
                       placeholder="aarti@example.com"
-                      className="w-full pl-10 pr-4 py-3 bg-white rounded-xl border border-stone-200 text-sm text-charcoal-900 placeholder:text-stone-400 focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500 transition-colors"
+                      className="w-full pl-10 pr-4 py-3 bg-theme-surface rounded-xl border border-theme-border text-sm text-theme-fg placeholder:text-theme-fg-subtle focus:outline-none focus:border-theme-accent focus:ring-1 focus:ring-theme-accent transition-colors"
                     />
                   </div>
                 </div>
@@ -231,16 +231,16 @@ export const BookingModal: React.FC<BookingModalProps> = ({
 
               {/* Treatment Selection */}
               <div>
-                <label className="block text-xs font-medium uppercase tracking-wider text-charcoal-700 mb-1.5">
+                <label className="block text-xs font-medium uppercase tracking-wider text-theme-fg-secondary mb-1.5">
                   Treatment / Concern of Interest
                 </label>
                 <div className="relative">
-                  <Sparkles className="absolute left-3.5 top-3.5 w-4 h-4 text-stone-400" />
+                  <Sparkles className="absolute left-3.5 top-3.5 w-4 h-4 text-theme-fg-subtle" />
                   <select
                     name="treatment"
                     value={formData.treatment}
                     onChange={handleChange}
-                    className="w-full pl-10 pr-4 py-3 bg-white rounded-xl border border-stone-200 text-sm text-charcoal-900 focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500 transition-colors"
+                    className="w-full pl-10 pr-4 py-3 bg-theme-surface rounded-xl border border-theme-border text-sm text-theme-fg focus:outline-none focus:border-theme-accent focus:ring-1 focus:ring-theme-accent transition-colors"
                   >
                     <option value="general-consultation">General Aesthetic Consultation</option>
                     {TREATMENTS.map(t => (
@@ -255,33 +255,32 @@ export const BookingModal: React.FC<BookingModalProps> = ({
               {/* Date & Time Slot Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-medium uppercase tracking-wider text-charcoal-700 mb-1.5">
+                  <label className="block text-xs font-medium uppercase tracking-wider text-theme-fg-secondary mb-1.5">
                     Preferred Date
                   </label>
                   <div className="relative">
-                    <Calendar className="absolute left-3.5 top-3.5 w-4 h-4 text-stone-400" />
+                    <Calendar className="absolute left-3.5 top-3.5 w-4 h-4 text-theme-fg-subtle" />
                     <input
                       type="date"
                       name="preferredDate"
                       value={formData.preferredDate}
                       onChange={handleChange}
-                      min={new Date().toISOString().split('T')[0]}
-                      className="w-full pl-10 pr-4 py-3 bg-white rounded-xl border border-stone-200 text-sm text-charcoal-900 focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500 transition-colors"
+                      className="w-full pl-10 pr-4 py-3 bg-theme-surface rounded-xl border border-theme-border text-sm text-theme-fg focus:outline-none focus:border-theme-accent focus:ring-1 focus:ring-theme-accent transition-colors"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-medium uppercase tracking-wider text-charcoal-700 mb-1.5">
-                    Preferred Time Slot
+                  <label className="block text-xs font-medium uppercase tracking-wider text-theme-fg-secondary mb-1.5">
+                    Preferred Time Window
                   </label>
                   <div className="relative">
-                    <Clock className="absolute left-3.5 top-3.5 w-4 h-4 text-stone-400" />
+                    <Clock className="absolute left-3.5 top-3.5 w-4 h-4 text-theme-fg-subtle" />
                     <select
                       name="preferredTime"
                       value={formData.preferredTime}
                       onChange={handleChange}
-                      className="w-full pl-10 pr-4 py-3 bg-white rounded-xl border border-stone-200 text-sm text-charcoal-900 focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500 transition-colors"
+                      className="w-full pl-10 pr-4 py-3 bg-theme-surface rounded-xl border border-theme-border text-sm text-theme-fg focus:outline-none focus:border-theme-accent focus:ring-1 focus:ring-theme-accent transition-colors"
                     >
                       <option value="morning">Morning (10:00 AM – 1:00 PM)</option>
                       <option value="afternoon">Afternoon (1:00 PM – 5:00 PM)</option>
@@ -291,23 +290,30 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                 </div>
               </div>
 
-              {/* Notes */}
+              {/* Consultation Notes */}
               <div>
-                <label className="block text-xs font-medium uppercase tracking-wider text-charcoal-700 mb-1.5">
-                  Specific Questions or Skin Concerns (Optional)
+                <label className="block text-xs font-medium uppercase tracking-wider text-theme-fg-secondary mb-1.5">
+                  Skin or Aesthetic Goals (Optional)
                 </label>
-                <textarea
-                  name="notes"
-                  rows={2}
-                  value={formData.notes}
-                  onChange={handleChange}
-                  placeholder="e.g. Inquiring about laser hair reduction sessions for underarms or dark spots..."
-                  className="w-full px-4 py-2.5 bg-white rounded-xl border border-stone-200 text-sm text-charcoal-900 placeholder:text-stone-400 focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500 transition-colors"
-                />
+                <div className="relative">
+                  <MessageSquare className="absolute left-3.5 top-3.5 w-4 h-4 text-theme-fg-subtle" />
+                  <textarea
+                    name="notes"
+                    rows={2}
+                    value={formData.notes}
+                    onChange={handleChange}
+                    placeholder="Briefly describe your skin goals or concerns..."
+                    className="w-full pl-10 pr-4 py-2.5 bg-theme-surface rounded-xl border border-theme-border text-sm text-theme-fg placeholder:text-theme-fg-subtle focus:outline-none focus:border-theme-accent focus:ring-1 focus:ring-theme-accent transition-colors resize-none"
+                  />
+                </div>
               </div>
 
-              {/* Submit CTA */}
+              {/* Privacy Notice & Submit Button */}
               <div className="pt-2">
+                <p className="text-[11px] text-theme-fg-subtle leading-relaxed mb-4">
+                  By submitting, you agree to receive appointment confirmations from HealRx Clinic via WhatsApp/Phone. Zero spam guaranteed.
+                </p>
+
                 <Button
                   type="submit"
                   variant="primary"
@@ -315,11 +321,8 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                   className="w-full"
                   disabled={status === 'submitting'}
                 >
-                  {status === 'submitting' ? 'Submitting Request...' : 'Confirm Consultation Request'}
+                  {status === 'submitting' ? 'Confirming Availability...' : 'Request Consultation'}
                 </Button>
-                <p className="text-[11px] text-center text-stone-400 mt-2">
-                  🔒 Strictly confidential. Your details are never shared.
-                </p>
               </div>
             </form>
           )}
@@ -328,3 +331,5 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     </div>
   );
 };
+
+export default BookingModal;

@@ -3,7 +3,7 @@ import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { Float, MeshDistortMaterial, Sphere } from '@react-three/drei';
 
-// Deterministic particle positions outside render for React 19 purity
+// Deterministic particle positions outside render for pure memory usage
 const PARTICLE_COUNT = 45;
 const generateParticlePositions = () => {
   const pos = new Float32Array(PARTICLE_COUNT * 3);
@@ -20,7 +20,11 @@ const generateParticlePositions = () => {
 };
 const STATIC_PARTICLE_POSITIONS = generateParticlePositions();
 
-export const CellularSculpture: React.FC = () => {
+interface CellularSculptureProps {
+  isDark?: boolean;
+}
+
+export const CellularSculpture: React.FC<CellularSculptureProps> = ({ isDark = false }) => {
   const outerMeshRef = useRef<THREE.Mesh>(null);
   const innerMeshRef = useRef<THREE.Mesh>(null);
   const ringRef = useRef<THREE.Group>(null);
@@ -31,67 +35,80 @@ export const CellularSculpture: React.FC = () => {
   useFrame((state) => {
     const time = state.clock.getElapsedTime();
 
-    // Idle organic rotation
+    // Restrained, slow idle rotation
     if (outerMeshRef.current) {
-      outerMeshRef.current.rotation.y = time * 0.15;
-      outerMeshRef.current.rotation.x = Math.sin(time * 0.1) * 0.2;
+      outerMeshRef.current.rotation.y = time * 0.12;
+      outerMeshRef.current.rotation.x = Math.sin(time * 0.08) * 0.15;
       
-      // Smooth mouse parallax response
-      outerMeshRef.current.rotation.x += (mouse.y * 0.4 - outerMeshRef.current.rotation.x) * 0.05;
-      outerMeshRef.current.rotation.y += (mouse.x * 0.4 - outerMeshRef.current.rotation.y) * 0.05;
+      // Extremely subtle, restrained pointer parallax response (no aggressive cursor chasing)
+      outerMeshRef.current.rotation.x += (mouse.y * 0.2 - outerMeshRef.current.rotation.x) * 0.03;
+      outerMeshRef.current.rotation.y += (mouse.x * 0.2 - outerMeshRef.current.rotation.y) * 0.03;
     }
 
     if (innerMeshRef.current) {
-      innerMeshRef.current.rotation.y = -time * 0.25;
-      innerMeshRef.current.rotation.z = Math.cos(time * 0.15) * 0.25;
-      innerMeshRef.current.scale.setScalar(0.72 + Math.sin(time * 1.2) * 0.03);
+      innerMeshRef.current.rotation.y = -time * 0.2;
+      innerMeshRef.current.rotation.z = Math.cos(time * 0.12) * 0.2;
+      innerMeshRef.current.scale.setScalar(0.72 + Math.sin(time * 1.0) * 0.025);
     }
 
     if (ringRef.current) {
-      ringRef.current.rotation.z = time * 0.08;
-      ringRef.current.rotation.x = Math.PI / 3 + Math.sin(time * 0.2) * 0.1;
+      ringRef.current.rotation.z = time * 0.06;
+      ringRef.current.rotation.x = Math.PI / 3 + Math.sin(time * 0.18) * 0.08;
     }
 
     if (particlesRef.current) {
-      particlesRef.current.rotation.y = time * 0.05;
-      particlesRef.current.rotation.x = time * 0.03;
+      particlesRef.current.rotation.y = time * 0.04;
+      particlesRef.current.rotation.x = time * 0.02;
     }
   });
 
   return (
     <group position={[0, 0, 0]}>
-      {/* Soft Ambient & Directional Warm Studio Lighting */}
-      <ambientLight intensity={1.2} />
-      <directionalLight position={[4, 5, 4]} intensity={2.5} color="#FAF8F5" />
-      <directionalLight position={[-4, -3, -2]} intensity={1.2} color="#D4BC98" />
-      <pointLight position={[0, 0, 3]} intensity={1.5} color="#9E7E5A" distance={8} />
+      {/* Studio Lighting - dynamically calibrated per theme */}
+      <ambientLight intensity={isDark ? 0.6 : 1.2} color={isDark ? '#1A1816' : '#FAF8F5'} />
+      <directionalLight
+        position={[4, 5, 4]}
+        intensity={isDark ? 2.2 : 2.5}
+        color={isDark ? '#FAF6EE' : '#FAF8F5'}
+      />
+      <directionalLight
+        position={[-4, -3, -2]}
+        intensity={isDark ? 1.6 : 1.2}
+        color={isDark ? '#C5A880' : '#D4BC98'}
+      />
+      <pointLight
+        position={[0, 0, 3]}
+        intensity={isDark ? 1.2 : 1.5}
+        color={isDark ? '#C5A880' : '#9E7E5A'}
+        distance={8}
+      />
 
-      <Float speed={2} rotationIntensity={0.4} floatIntensity={0.6}>
+      <Float speed={1.8} rotationIntensity={0.3} floatIntensity={0.5}>
         {/* Outer Translucent Sculptural Organic Membrane */}
         <Sphere ref={outerMeshRef} args={[1.4, 64, 64]}>
           <MeshDistortMaterial
-            color="#EFE9E0"
-            roughness={0.15}
-            metalness={0.1}
-            distort={0.35}
-            speed={1.5}
-            transmission={0.65}
-            thickness={1.2}
+            color={isDark ? '#26221E' : '#EFE9E0'}
+            roughness={isDark ? 0.18 : 0.15}
+            metalness={isDark ? 0.18 : 0.1}
+            distort={0.32}
+            speed={1.4}
+            transmission={isDark ? 0.58 : 0.68}
+            thickness={1.3}
             ior={1.35}
             transparent={true}
-            opacity={0.88}
+            opacity={isDark ? 0.82 : 0.88}
           />
         </Sphere>
 
         {/* Inner Cellular Nucleus (Warm Champagne Gold) */}
         <Sphere ref={innerMeshRef} args={[0.75, 48, 48]}>
           <MeshDistortMaterial
-            color="#A88B68"
-            roughness={0.3}
-            metalness={0.4}
-            distort={0.4}
-            speed={2}
-            clearcoat={0.8}
+            color={isDark ? '#C5A880' : '#A88B68'}
+            roughness={0.25}
+            metalness={isDark ? 0.45 : 0.38}
+            distort={0.38}
+            speed={1.8}
+            clearcoat={0.9}
             clearcoatRoughness={0.1}
           />
         </Sphere>
@@ -101,11 +118,11 @@ export const CellularSculpture: React.FC = () => {
           <mesh rotation={[Math.PI / 2, 0, 0]}>
             <torusGeometry args={[1.9, 0.012, 16, 100]} />
             <meshStandardMaterial
-              color="#9E7E5A"
-              metalness={0.8}
+              color={isDark ? '#C5A880' : '#9E7E5A'}
+              metalness={0.85}
               roughness={0.2}
               transparent={true}
-              opacity={0.6}
+              opacity={isDark ? 0.75 : 0.6}
             />
           </mesh>
         </group>
@@ -121,10 +138,10 @@ export const CellularSculpture: React.FC = () => {
             />
           </bufferGeometry>
           <pointsMaterial
-            size={0.04}
-            color="#C5A880"
+            size={0.035}
+            color={isDark ? '#DDC8A8' : '#C5A880'}
             transparent={true}
-            opacity={0.65}
+            opacity={isDark ? 0.7 : 0.6}
             sizeAttenuation={true}
           />
         </points>
@@ -132,3 +149,5 @@ export const CellularSculpture: React.FC = () => {
     </group>
   );
 };
+
+export default CellularSculpture;
