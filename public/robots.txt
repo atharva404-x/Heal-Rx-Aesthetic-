@@ -1,0 +1,7 @@
+# HealRx Aesthetics & Laser Clinic
+# Production Robots Exclusion Standard
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://healrx.in/sitemap.xml

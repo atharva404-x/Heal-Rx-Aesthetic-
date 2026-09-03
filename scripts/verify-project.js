@@ -159,9 +159,12 @@ if (a11yWarnings === 0) {
 console.log('\n--- 6. 3D SAFETY & PERFORMANCE AUDIT ---');
 const heroCanvas = fs.readFileSync(path.join(SRC_DIR, 'components', '3d', 'HeroCanvas.tsx'), 'utf-8');
 const sculpture = fs.readFileSync(path.join(SRC_DIR, 'components', '3d', 'CellularSculpture.tsx'), 'utf-8');
+const sceneFile = fs.existsSync(path.join(SRC_DIR, 'components', '3d', 'CellularCanvasScene.tsx')) 
+  ? fs.readFileSync(path.join(SRC_DIR, 'components', '3d', 'CellularCanvasScene.tsx'), 'utf-8')
+  : '';
 
 const hasFallback = heroCanvas.includes('hasWebGL') && heroCanvas.includes('prefersReducedMotion');
-const hasDprLimit = heroCanvas.includes('dpr={[1, 2]}');
+const hasDprLimit = heroCanvas.includes('dpr={[1, 2]}') || sceneFile.includes('dpr={[1, 2]}');
 const hasPureParticles = sculpture.includes('STATIC_PARTICLE_POSITIONS');
 
 console.log(`✓ WebGL detection & Reduced Motion fallback: ${hasFallback ? 'PASSED' : 'FAILED'}`);

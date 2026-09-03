@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { ArrowUpRight } from 'lucide-react';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -9,6 +10,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string;
   as?: 'button' | 'a';
   href?: string;
+  to?: string;
   target?: string;
   rel?: string;
 }
@@ -21,6 +23,7 @@ export const Button: React.FC<ButtonProps> = ({
   className = '',
   as = 'button',
   href,
+  to,
   target,
   rel,
   ...props
@@ -42,6 +45,17 @@ export const Button: React.FC<ButtonProps> = ({
   };
 
   const combinedStyles = `${baseStyles} ${sizeStyles[size]} ${variantStyles[variant]} ${className}`;
+
+  if (to) {
+    return (
+      <Link to={to} className={combinedStyles}>
+        <span>{children}</span>
+        {showArrow && (
+          <ArrowUpRight className="w-4 h-4 ml-2 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+        )}
+      </Link>
+    );
+  }
 
   if (as === 'a' && href) {
     return (

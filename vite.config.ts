@@ -9,11 +9,15 @@ export default defineConfig({
     host: true,
   },
   build: {
+    outDir: 'dist',
+    sourcemap: false,
+    chunkSizeWarningLimit: 1000,
     rollupOptions: {
       output: {
         manualChunks: {
           'react-vendor': ['react', 'react-dom', 'react-router-dom'],
           'three-vendor': ['three', '@react-three/fiber', '@react-three/drei'],
+          'ui-icons': ['lucide-react'],
           'motion-vendor': ['framer-motion'],
         },
       },

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams, Link, Navigate } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { 
   CheckCircle2, 
   ShieldAlert, 
@@ -24,7 +24,58 @@ export const TreatmentDetailPage: React.FC<TreatmentDetailPageProps> = ({ onOpen
   const treatment = TREATMENTS.find(t => t.slug === slug);
 
   if (!treatment) {
-    return <Navigate to="/treatments" replace />;
+    return (
+      <div className="min-h-screen bg-ivory-100 text-charcoal-900 pt-32 sm:pt-40 pb-20">
+        <SEOHead 
+          title="Treatment Not Found | HealRx Aesthetics Sion" 
+          description="The requested aesthetic treatment was not found in our catalog. Explore doctor-led aesthetic protocols at HealRx Sion Mumbai."
+        />
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
+          <span className="text-[11px] uppercase tracking-widest-luxury text-gold-700 font-semibold px-3.5 py-1.5 rounded-full bg-gold-100/70 border border-gold-300/50 inline-block">
+            Procedure Catalog
+          </span>
+          <h1 className="font-serif text-3xl sm:text-4xl text-charcoal-900 font-normal">
+            Treatment Procedure Not Found
+          </h1>
+          <p className="text-stone-600 text-base leading-relaxed max-w-lg mx-auto">
+            The procedure &ldquo;{slug}&rdquo; is not currently listed or may have been renamed in our clinical portfolio.
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
+            <Button to="/treatments" variant="primary" size="md">
+              View All Treatments
+            </Button>
+            <Button variant="secondary" size="md" onClick={() => onOpenBooking()}>
+              Book Doctor Consultation
+            </Button>
+          </div>
+          
+          <div className="pt-12 text-left">
+            <h2 className="font-serif text-xl text-charcoal-900 mb-6 text-center">
+              Popular Clinical Procedures
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {TREATMENTS.slice(0, 4).map(t => (
+                <Link
+                  key={t.slug}
+                  to={`/treatments/${t.slug}`}
+                  className="p-4 rounded-2xl bg-white border border-stone-200/80 hover:border-gold-400 hover:shadow-luxury-sm transition-all group block"
+                >
+                  <span className="text-[10px] uppercase tracking-wider text-gold-800 block mb-1 font-medium">
+                    {t.categoryLabel}
+                  </span>
+                  <span className="font-serif text-base text-charcoal-900 group-hover:text-gold-700 font-medium block">
+                    {t.title}
+                  </span>
+                  <span className="text-xs text-stone-500 mt-1 line-clamp-2 block">
+                    {t.shortDescription}
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   const relatedTreatments = TREATMENTS
