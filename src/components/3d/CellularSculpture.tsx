@@ -30,10 +30,26 @@ export const CellularSculpture: React.FC<CellularSculptureProps> = ({ isDark = f
   const ringRef = useRef<THREE.Group>(null);
   const particlesRef = useRef<THREE.Points>(null);
 
+  const groupRef = useRef<THREE.Group>(null);
+  const scrollDampedRef = useRef(0);
   const { mouse } = useThree();
 
   useFrame((state) => {
     const time = state.clock.getElapsedTime();
+
+    // Damped, clamped scroll parallax for the 3D group
+    if (typeof window !== 'undefined') {
+      const targetScroll = Math.min(Math.max(window.scrollY, 0), 1000);
+      scrollDampedRef.current += (targetScroll - scrollDampedRef.current) * 0.05;
+    }
+    const scrollProgress = scrollDampedRef.current / 1000; // 0 to 1
+
+    if (groupRef.current) {
+      // Subtle vertical translation and recession into depth
+      groupRef.current.position.y = -scrollProgress * 0.4;
+      groupRef.current.position.z = -scrollProgress * 0.75;
+      groupRef.current.rotation.x = scrollProgress * 0.16;
+    }
 
     // Restrained, slow idle rotation
     if (outerMeshRef.current) {
@@ -41,8 +57,8 @@ export const CellularSculpture: React.FC<CellularSculptureProps> = ({ isDark = f
       outerMeshRef.current.rotation.x = Math.sin(time * 0.08) * 0.15;
       
       // Extremely subtle, restrained pointer parallax response (no aggressive cursor chasing)
-      outerMeshRef.current.rotation.x += (mouse.y * 0.2 - outerMeshRef.current.rotation.x) * 0.03;
-      outerMeshRef.current.rotation.y += (mouse.x * 0.2 - outerMeshRef.current.rotation.y) * 0.03;
+      outerMeshRef.current.rotation.x += (mouse.y * 0.18 - outerMeshRef.current.rotation.x) * 0.03;
+      outerMeshRef.current.rotation.y += (mouse.x * 0.18 - outerMeshRef.current.rotation.y) * 0.03;
     }
 
     if (innerMeshRef.current) {
@@ -63,7 +79,7 @@ export const CellularSculpture: React.FC<CellularSculptureProps> = ({ isDark = f
   });
 
   return (
-    <group position={[0, 0, 0]}>
+    <group ref={groupRef} position={[0, 0, 0]}>
       {/* Studio Lighting - dynamically calibrated per theme */}
       <ambientLight intensity={isDark ? 0.6 : 1.2} color={isDark ? '#1A1816' : '#FAF8F5'} />
       <directionalLight

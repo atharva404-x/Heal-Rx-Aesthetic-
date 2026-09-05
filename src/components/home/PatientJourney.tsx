@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion';
 import { Sparkles, ShieldCheck, Stethoscope, Sliders, HeartPulse } from 'lucide-react';
 import { SectionHeading } from '../ui/SectionHeading';
 import { Button } from '../ui/Button';
-import { Magnetic, FadeIn } from '../motion/MotionPrimitives';
+import { Magnetic, LUXURY_EASE, usePrefersReducedMotion } from '../motion/MotionPrimitives';
 
 interface Step {
   num: string;
@@ -50,9 +50,36 @@ interface PatientJourneyProps {
 
 export const PatientJourney: React.FC<PatientJourneyProps> = ({ onOpenBooking }) => {
   const [activeStep, setActiveStep] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const prefersReducedMotion = usePrefersReducedMotion();
+
+  // Scroll progression mapping
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ['start 75%', 'end 85%'],
+  });
+
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 120,
+    damping: 30,
+    restDelta: 0.001,
+  });
+
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+
+    return scrollYProgress.on('change', (v) => {
+      // Map scroll progress to 0-3
+      const stepIndex = Math.min(Math.max(Math.floor(v * JOURNEY_STEPS.length), 0), JOURNEY_STEPS.length - 1);
+      setActiveStep(stepIndex);
+    });
+  }, [scrollYProgress, prefersReducedMotion]);
 
   return (
-    <section className="py-20 sm:py-28 lg:py-32 bg-theme-bg-alt border-y border-theme-border transition-colors duration-400">
+    <section
+      ref={containerRef}
+      className="py-20 sm:py-28 lg:py-32 bg-theme-bg-alt border-y border-theme-border transition-colors duration-400 relative"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
           label="The Patient Experience"
@@ -65,14 +92,14 @@ export const PatientJourney: React.FC<PatientJourneyProps> = ({ onOpenBooking })
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           {/* Left Column: Interactive Step Navigator (7 Cols) */}
           <div className="lg:col-span-7 space-y-3 relative">
-            {/* Connecting Vertical Track */}
-            <div className="absolute left-6 top-8 bottom-8 w-[1.5px] bg-theme-border -z-0 hidden sm:block">
+            {/* Connecting Vertical Track with Scroll Driven Indicator */}
+            <div className="absolute left-6 top-8 bottom-8 w-[2px] bg-theme-border -z-0 hidden sm:block">
               <motion.div
                 className="w-full bg-theme-accent origin-top"
-                animate={{
-                  height: `${((activeStep + 1) / JOURNEY_STEPS.length) * 100}%`,
+                style={{
+                  scaleY: prefersReducedMotion ? (activeStep + 1) / JOURNEY_STEPS.length : smoothProgress,
+                  height: '100%',
                 }}
-                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
               />
             </div>
 
@@ -86,7 +113,7 @@ export const PatientJourney: React.FC<PatientJourneyProps> = ({ onOpenBooking })
                   onClick={() => setActiveStep(idx)}
                   className={`relative p-5 sm:p-6 rounded-2xl sm:rounded-3xl cursor-pointer transition-all duration-400 border select-none group ${
                     isActive
-                      ? 'bg-theme-surface border-theme-accent/50 shadow-luxury'
+                      ? 'bg-theme-surface border-theme-accent/60 shadow-luxury scale-[1.01]'
                       : 'bg-theme-surface/40 border-theme-border hover:bg-theme-surface hover:border-theme-border-highlight'
                   }`}
                 >
@@ -145,11 +172,18 @@ export const PatientJourney: React.FC<PatientJourneyProps> = ({ onOpenBooking })
 
           {/* Right Column: Dynamic Editorial Feature Card (5 Cols) */}
           <div className="lg:col-span-5 hidden sm:block">
-            <FadeIn delay={0.1}>
-              <div className="p-8 sm:p-10 rounded-3xl bg-theme-surface border border-theme-border shadow-luxury relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-48 h-48 bg-theme-accent-surface rounded-full blur-2xl pointer-events-none -z-0" />
+            <div className="p-8 sm:p-10 rounded-3xl bg-theme-surface border border-theme-border shadow-luxury relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-48 h-48 bg-theme-accent-surface rounded-full blur-2xl pointer-events-none -z-0" />
 
-                <div className="relative z-10 space-y-6">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeStep}
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -15 }}
+                  transition={{ duration: 0.35, ease: LUXURY_EASE }}
+                  className="relative z-10 space-y-6"
+                >
                   <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-theme-accent-surface border border-theme-border-highlight text-theme-accent text-xs font-medium">
                     <ShieldCheck className="w-3.5 h-3.5" />
                     <span>Clinical Protocol Standard</span>
@@ -187,9 +221,9 @@ export const PatientJourney: React.FC<PatientJourneyProps> = ({ onOpenBooking })
                       </Button>
                     </Magnetic>
                   </div>
-                </div>
-              </div>
-            </FadeIn>
+                </motion.div>
+              </AnimatePresence>
+            </div>
           </div>
         </div>
       </div>

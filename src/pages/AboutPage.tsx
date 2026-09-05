@@ -5,7 +5,7 @@ import { ASSETS } from '../data/assets';
 import { Button } from '../components/ui/Button';
 import { SectionHeading } from '../components/ui/SectionHeading';
 import { SEOHead } from '../components/seo/SEOHead';
-import { FadeIn, TextReveal, Magnetic } from '../components/motion/MotionPrimitives';
+import { FadeIn, TextReveal, Magnetic, ParallaxImage, StaggerReveal } from '../components/motion/MotionPrimitives';
 
 interface AboutPageProps {
   onOpenBooking: (treatmentSlug?: string) => void;
@@ -43,18 +43,21 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onOpenBooking }) => {
       {/* Editorial Image Banner */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-          <div className="md:col-span-8 rounded-3xl overflow-hidden shadow-luxury aspect-[16/9] border border-theme-border group">
-            <img
+          <div className="md:col-span-8">
+            <ParallaxImage
               src={ASSETS.clinic.consultationSuite}
               alt="HealRx Aesthetic Suite in Sion Mumbai"
-              className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+              offset={35}
+              aspectRatio="aspect-[16/9]"
             />
           </div>
-          <div className="md:col-span-4 rounded-3xl overflow-hidden shadow-luxury aspect-[4/3] md:aspect-auto border border-theme-border group">
-            <img
+          <div className="md:col-span-4">
+            <ParallaxImage
               src={ASSETS.clinic.laserSuite}
               alt="HealRx Medical Laser Suite"
-              className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+              offset={24}
+              aspectRatio="aspect-[4/3] md:aspect-auto"
+              className="h-full"
             />
           </div>
         </div>
@@ -64,15 +67,14 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onOpenBooking }) => {
       <section className="py-20 bg-theme-bg-alt border-y border-theme-border transition-colors duration-400">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            {/* Portrait */}
+            {/* Portrait with Slow Parallax */}
             <div className="lg:col-span-5">
-              <div className="rounded-3xl overflow-hidden shadow-luxury border border-theme-border aspect-[4/5] bg-theme-surface-elevated group">
-                <img
-                  src={MEDICAL_DIRECTOR.image}
-                  alt={MEDICAL_DIRECTOR.name}
-                  className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                />
-              </div>
+              <ParallaxImage
+                src={MEDICAL_DIRECTOR.image}
+                alt={MEDICAL_DIRECTOR.name}
+                offset={28}
+                aspectRatio="aspect-[4/5]"
+              />
             </div>
 
             {/* Content */}
@@ -133,7 +135,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onOpenBooking }) => {
           subtitle="How we maintain uncompromised clinical excellence, patient confidentiality, and predictable outcomes."
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 mt-14">
+        <StaggerReveal staggerDelay={0.1} className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 mt-14">
           {[
             {
               icon: ShieldCheck,
@@ -162,7 +164,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onOpenBooking }) => {
               </div>
             );
           })}
-        </div>
+        </StaggerReveal>
       </section>
 
       {/* CTA Box */}

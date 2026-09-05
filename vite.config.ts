@@ -20,7 +20,7 @@ export default defineConfig({
           'react-vendor': ['react', 'react-dom', 'react-router-dom'],
           'three-vendor': ['three', '@react-three/fiber', '@react-three/drei'],
           'ui-icons': ['lucide-react'],
-          'motion-vendor': ['framer-motion'],
+          'motion-vendor': ['framer-motion', 'gsap', 'lenis'],
         },
       },
     },

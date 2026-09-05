@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Phone, Calendar, Instagram, MapPin } from 'lucide-react';
 import { CLINIC_INFO, NAV_LINKS } from '../../data/site';
@@ -12,12 +12,24 @@ interface NavbarProps {
 
 export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isCompressed, setIsCompressed] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const lastScrollYRef = useRef(0);
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 25);
+      const currentScrollY = window.scrollY;
+      setIsScrolled(currentScrollY > 20);
+
+      // Compress slightly when scrolling down after 100px, expand when scrolling up
+      if (currentScrollY > 100 && currentScrollY > lastScrollYRef.current + 5) {
+        setIsCompressed(true);
+      } else if (currentScrollY < lastScrollYRef.current - 5 || currentScrollY <= 80) {
+        setIsCompressed(false);
+      }
+
+      lastScrollYRef.current = currentScrollY;
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -46,9 +58,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${
+        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-400 ${
           isScrolled
-            ? 'glass-nav py-3.5 shadow-luxury-sm'
+            ? isCompressed
+              ? 'glass-nav py-2.5 sm:py-3 shadow-luxury-sm'
+              : 'glass-nav py-3.5 sm:py-4 shadow-luxury-sm'
             : 'bg-transparent py-5 sm:py-7'
         }`}
       >
